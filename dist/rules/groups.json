@@ -1,0 +1,27 @@
+{
+    "mysql":[
+        "MysqldExporter"
+    ],
+    "thanos":[
+        "ThanosBucketReplicate",
+        "ThanosCompactor",
+        "ThanosComponentAbsent",
+        "ThanosQuery",
+        "ThanosReceiver",
+        "ThanosRuler",
+        "ThanosSidecar",
+        "ThanosStore"
+    ],
+    "apache" : [
+        "LusitaniaeApacheExporter"
+    ],
+    "apc-ups" : [
+            "Apcupsd_exporter"
+    ],
+    "argocd" : [
+            "EmbeddedExporter"
+    ],
+    "blackbox": [
+            "BlackboxExporter"
+    ]
+}
