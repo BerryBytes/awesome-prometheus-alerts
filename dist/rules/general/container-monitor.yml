@@ -5,7 +5,7 @@ groups:
   rules:
 
     - alert: ContainerKilled
-      expr: 'time() - container_last_seen{namespace="database"} < 60'
+      expr: 'time() - container_last_seen{namespace="database"} > 60'
       for: 0m
       labels:
         severity: warning
@@ -59,7 +59,7 @@ groups:
     #     description: "Container is being throttled\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
 
     - alert: ContainerLowCpuUtilization
-      expr: '(sum(rate(container_cpu_usage_seconds_total{namespace="NAMESPACE"}[3m])) BY (instance, name) * 100) < 20'
+      expr: '(sum(rate(container_cpu_usage_seconds_total{name!="",namespace="NAMESPACE"}[3m])) BY (instance, name) * 100) < 20'
       for: 3d
       labels:
         severity: info
@@ -68,7 +68,7 @@ groups:
         description: "Container CPU utilization is under 20% for 1 week. Consider reducing the allocated CPU.\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
 
     - alert: ContainerLowMemoryUsage
-      expr: '(sum(container_memory_working_set_bytes{namespace="NAMESPACE"}) BY (instance, name) / sum(container_spec_memory_limit_bytes{namespace="NAMESPACE"} > 0) BY (instance, name) * 100) < 20'
+      expr: '(sum(container_memory_working_set_bytes{name!="",namespace="database"}) BY (instance, name) / sum(container_spec_memory_limit_bytes{name!="",namespace="database"} > 0) BY (instance, name) * 100) < 20'
       for: 3d
       labels:
         severity: info
