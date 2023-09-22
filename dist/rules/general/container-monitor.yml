@@ -1,11 +1,11 @@
 groups:
 
-- name: GoogleCadvisor
+- name: GeneralRules
 
   rules:
 
     - alert: ContainerKilled
-      expr: 'time() - container_last_seen > 60'
+      expr: 'time() - container_last_seen{namespace="NAMESPACE"} > 60'
       for: 0m
       labels:
         severity: warning
@@ -14,7 +14,7 @@ groups:
         description: "A container has disappeared\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
 
     - alert: ContainerAbsent
-      expr: 'absent(container_last_seen)'
+      expr: 'absent(container_last_seen{namespace="NAMESPACE"})'
       for: 5m
       labels:
         severity: warning
@@ -23,7 +23,7 @@ groups:
         description: "A container is absent for 5 min\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
 
     - alert: ContainerHighCpuUtilization
-      expr: '(sum(rate(container_cpu_usage_seconds_total{name!=""}[3m])) BY (instance, name) * 100) > 80'
+      expr: '(sum(rate(container_cpu_usage_seconds_total{namespace="NAMESPACE"}[3m])) BY (instance, name) * 100) > 80'
       for: 2m
       labels:
         severity: warning
@@ -32,7 +32,7 @@ groups:
         description: "Container CPU utilization is above 80%\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
 
     - alert: ContainerHighMemoryUsage
-      expr: '(sum(container_memory_working_set_bytes{name!=""}) BY (instance, name) / sum(container_spec_memory_limit_bytes > 0) BY (instance, name) * 100) > 80'
+      expr: '(sum(container_memory_working_set_bytes{namespace="NAMESPACE"}) BY (instance, namespace) / sum(container_spec_memory_limit_bytes{namespace="NAMESPACE"} > 0) BY (instance, name) * 100) > 80'
       for: 2m
       labels:
         severity: warning
@@ -41,7 +41,7 @@ groups:
         description: "Container Memory usage is above 80%\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
 
     - alert: ContainerVolumeUsage
-      expr: '(1 - (sum(container_fs_inodes_free{name!=""}) BY (instance) / sum(container_fs_inodes_total) BY (instance))) * 100 > 80'
+      expr: '(1 - (sum(container_fs_inodes_free{namepace="NAMESPACE"}) BY (instance) / sum(container_fs_inodes_total{namepace="NAMESPACE"}) BY (instance))) * 100 > 80'
       for: 2m
       labels:
         severity: warning
@@ -50,7 +50,7 @@ groups:
         description: "Container Volume usage is above 80%\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
 
     - alert: ContainerHighThrottleRate
-      expr: 'rate(container_cpu_cfs_throttled_seconds_total[3m]) > 1'
+      expr: 'rate(container_cpu_cfs_throttled_seconds_total{namespace="NAMESPACE"}[1m]) > 1'
       for: 2m
       labels:
         severity: warning
@@ -59,7 +59,7 @@ groups:
         description: "Container is being throttled\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
 
     - alert: ContainerLowCpuUtilization
-      expr: '(sum(rate(container_cpu_usage_seconds_total{name!=""}[3m])) BY (instance, name) * 100) < 20'
+      expr: '(sum(rate(container_cpu_usage_seconds_total{namespace="NAMESPACE"}[3m])) BY (instance, name) * 100) < 20'
       for: 7d
       labels:
         severity: info
@@ -68,7 +68,7 @@ groups:
         description: "Container CPU utilization is under 20% for 1 week. Consider reducing the allocated CPU.\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
 
     - alert: ContainerLowMemoryUsage
-      expr: '(sum(container_memory_working_set_bytes{name!=""}) BY (instance, name) / sum(container_spec_memory_limit_bytes > 0) BY (instance, name) * 100) < 20'
+      expr: '(sum(container_memory_working_set_bytes{namespace="NAMESPACE"}) BY (instance, name) / sum(container_spec_memory_limit_bytes > 0) BY (instance, name) * 100) < 20'
       for: 7d
       labels:
         severity: info

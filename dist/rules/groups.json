@@ -1,27 +1,23 @@
 {
-    "mysql":[
-        "MysqldExporter"
-    ],
-    "thanos":[
-        "ThanosBucketReplicate",
-        "ThanosCompactor",
-        "ThanosComponentAbsent",
-        "ThanosQuery",
-        "ThanosReceiver",
-        "ThanosRuler",
-        "ThanosSidecar",
-        "ThanosStore"
-    ],
-    "apache" : [
-        "LusitaniaeApacheExporter"
-    ],
-    "apc-ups" : [
-            "Apcupsd_exporter"
-    ],
-    "argocd" : [
-            "EmbeddedExporter"
-    ],
-    "blackbox": [
-            "BlackboxExporter"
-    ]
+	"mysql": {
+		"groups": [
+			"MysqldExporter"
+		],
+		"script": "helm install mysql-exporter prometheus-community/prometheus-mysql-exporter --version 2.0.0 --set mysql.host=$HOST,mysql.user=$USER,mysql.pass=$PASS,mysql.db=$DB",
+		"values": [
+			"USER",
+			"PASS",
+			"HOST",
+			"DB"
+		]
+	},
+    "general": {
+		"groups": [
+			"GeneralRules"
+		],
+		"script": "",
+		"values": [
+
+		]
+	}
 }
