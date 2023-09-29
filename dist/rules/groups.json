@@ -3,12 +3,13 @@
 		"groups": [
 			"MysqldExporter"
 		],
-		"script": "helm install mysql-exporter prometheus-community/prometheus-mysql-exporter --version 2.0.0 --set mysql.host=$HOST,mysql.user=$USER,mysql.pass=$PASS,mysql.db=$DB",
+		"script": "helm install mysql-exporter prometheus-community/prometheus-mysql-exporter --version 2.0.0 --set mysql.host=$HOST,mysql.user=$USER,mysql.pass=$PASS,mysql.db=$DB,mysql.port=$PORT",
 		"values": [
 			"USER",
 			"PASS",
 			"HOST",
-			"DB"
+			"DB",
+			"PORT"
 		]
 	},
     "general": {
@@ -19,5 +20,30 @@
 		"values": [
 
 		]
+	},
+
+
+	"mongodb": {
+		"groups": [
+			"StefanprodanMgobExporter",
+			"DcuMongodbExporter",
+			"PerconaMongodbExporter"
+		],
+		"script": "",
+		"values": [
+
+		]
+	},
+	"postgresql": {
+		"groups": [
+			"PostgresExporter"
+		],
+		"script": "",
+		"values": [
+
+		]
 	}
+
+
+
 }
