@@ -12,6 +12,7 @@ groups:
       annotations:
         summary: MongoDB replication lag (instance {{ $labels.instance }})
         description: "Mongodb replication lag is more than 10s\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+        description_display: If description_display.
 
     - alert: MongodbReplicationStatus3
       expr: 'mongodb_replset_member_state == 3'
@@ -21,6 +22,7 @@ groups:
       annotations:
         summary: MongoDB replication Status 3 (instance {{ $labels.instance }})
         description: "MongoDB Replication set member either perform startup self-checks, or transition from completing a rollback or resync\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+        description_display: A member in the MongoDB Replication Set is in the process of either performing self-checks during startup or transitioning from completing a rollback or resynchronization.
 
     - alert: MongodbReplicationStatus6
       expr: 'mongodb_replset_member_state == 6'
@@ -30,6 +32,7 @@ groups:
       annotations:
         summary: MongoDB replication Status 6 (instance {{ $labels.instance }})
         description: "MongoDB Replication set member as seen from another member of the set, is not yet known\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+        description_display: If MongoDB Replication set, the status of this member is currently undetermined.
 
     - alert: MongodbReplicationStatus8
       expr: 'mongodb_replset_member_state == 8'
@@ -39,6 +42,7 @@ groups:
       annotations:
         summary: MongoDB replication Status 8 (instance {{ $labels.instance }})
         description: "MongoDB Replication set member as seen from another member of the set, is unreachable\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+        description_display: If the MongoDB Replication set, which is  currently unreachable.
 
     - alert: MongodbReplicationStatus9
       expr: 'mongodb_replset_member_state == 9'
@@ -48,6 +52,7 @@ groups:
       annotations:
         summary: MongoDB replication Status 9 (instance {{ $labels.instance }})
         description: "MongoDB Replication set member is actively performing a rollback. Data is not available for reads\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+        description_display: If MongoDB Replication set member is actively engaged in a rollback process, rendering the data unavailable for read operations.
 
     - alert: MongodbReplicationStatus10
       expr: 'mongodb_replset_member_state == 10'
@@ -57,6 +62,7 @@ groups:
       annotations:
         summary: MongoDB replication Status 10 (instance {{ $labels.instance }})
         description: "MongoDB Replication set member was once in a replica set but was subsequently removed\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+        description_display: If MongoDB Replication set member was previously part of a replica set but has since been removed.
 
     - alert: MongodbNumberCursorsOpen
       expr: 'mongodb_metrics_cursor_open{state="total_open"} > 10000'
@@ -66,6 +72,7 @@ groups:
       annotations:
         summary: MongoDB number cursors open (instance {{ $labels.instance }})
         description: "Too many cursors opened by MongoDB for clients (> 10k)\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+        description_display: If MongoDB has opened an excessive number of cursors for clients.
 
     - alert: MongodbCursorsTimeouts
       expr: 'increase(mongodb_metrics_cursor_timed_out_total[1m]) > 100'
@@ -75,6 +82,7 @@ groups:
       annotations:
         summary: MongoDB cursors timeouts (instance {{ $labels.instance }})
         description: "Too many cursors are timing out\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+        description_display: If Too many cursors are timing out
 
     - alert: MongodbTooManyConnections
       expr: 'avg by(instance) (rate(mongodb_connections{state="current"}[1m])) / avg by(instance) (sum (mongodb_connections) by (instance)) * 100 > 80'
@@ -84,6 +92,7 @@ groups:
       annotations:
         summary: MongoDB too many connections (instance {{ $labels.instance }})
         description: "Too many connections (> 80%)\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+        description_display: If MongoDB has too many connections.
 
     - alert: MongodbVirtualMemoryUsage
       expr: '(sum(mongodb_memory{type="virtual"}) BY (instance) / sum(mongodb_memory{type="mapped"}) BY (instance)) > 3'
@@ -93,3 +102,4 @@ groups:
       annotations:
         summary: MongoDB virtual memory usage (instance {{ $labels.instance }})
         description: "High memory usage\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+        description_display: If MongoDB exhibits elevated memory usage.

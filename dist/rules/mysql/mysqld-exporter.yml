@@ -12,6 +12,7 @@ groups:
       annotations:
         summary: MySQL down (instance {{ $labels.instance }})
         description: "MySQL instance is down on {{ $labels.instance }}\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+        description_display: If MySQL instance is down.
         
     - alert: MysqlTooManyConnections(>80%)
       expr: 'max_over_time(mysql_global_status_threads_connected{namespace="NAMESPACE"}[1m]) / mysql_global_variables_max_connections{namespace="NAMESPACE"} * 100 > 80'
@@ -21,6 +22,7 @@ groups:
       annotations:
         summary: MySQL too many connections (> 80%) (instance {{ $labels.instance }})
         description: "More than 80% of MySQL connections are in use on {{ $labels.instance }}\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+        description_display: If MySQL has too many connections over 80%.
 
     - alert: MysqlHighThreadsRunning
       expr: 'max_over_time(mysql_global_status_threads_running{namespace="NAMESPACE"}[1m]) / mysql_global_variables_max_connections{namespace="NAMESPACE"} * 100 > 60'
@@ -30,6 +32,7 @@ groups:
       annotations:
         summary: MySQL high threads running (instance {{ $labels.instance }})
         description: "More than 60% of MySQL connections are in running state on {{ $labels.instance }}\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+        description_display: If there is an overload of active threads in MySQL. .
 
     - alert: MysqlSlaveIoThreadNotRunning
       expr: '( mysql_slave_status_slave_io_running{namespace="NAMESPACE"}  and ON (instance) mysql_slave_status_master_server_id{namespace="NAMESPACE"}  > 0 )== 0'
@@ -39,6 +42,7 @@ groups:
       annotations:
         summary: MySQL Slave IO thread not running (instance {{ $labels.instance }})
         description: "MySQL Slave IO thread not running on {{ $labels.instance }}\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+        description_display: If  MySQL Slave IO thread is inactive
 
     - alert: MysqlSlaveSqlThreadNotRunning
       expr: '( mysql_slave_status_slave_sql_running{namespace="NAMESPACE"} and ON (instance) mysql_slave_status_master_server_id{namespace="NAMESPACE"} > 0) == 0'
@@ -48,6 +52,7 @@ groups:
       annotations:
         summary: MySQL Slave SQL thread not running (instance {{ $labels.instance }})
         description: "MySQL Slave SQL thread not running on {{ $labels.instance }}\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+        description_display: If MySQL Slave SQL thread is not currently operational.
 
     - alert: MysqlSlaveReplicationLag
       expr: '( (mysql_slave_status_seconds_behind_master{namespace="NAMESPACE"} - mysql_slave_status_sql_delay{namespace="NAMESPACE"}) and ON (instance) mysql_slave_status_master_server_id{namespace="NAMESPACE"} > 0 ) > 30'
@@ -57,6 +62,7 @@ groups:
       annotations:
         summary: MySQL Slave replication lag (instance {{ $labels.instance }})
         description: "MySQL replication lag on {{ $labels.instance }}\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+        description_display: If MySQL replication is experiencing a lag.
 
     - alert: MysqlSlowQueries
       expr: 'increase(mysql_global_status_slow_queries{namespace="NAMESPACE"}[1m]) > 0'
@@ -66,6 +72,7 @@ groups:
       annotations:
         summary: MySQL slow queries (instance {{ $labels.instance }})
         description: "MySQL server mysql has some new slow query.\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+        description_display: If MySQL server mysql has some new slow query. 
 
     - alert: MysqlInnodbLogWaits
       expr: 'rate(mysql_global_status_innodb_log_waits{namespace="NAMESPACE"}[15m]) > 10'
@@ -75,6 +82,7 @@ groups:
       annotations:
         summary: MySQL InnoDB log waits (instance {{ $labels.instance }})
         description: "MySQL innodb log writes stalling\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+        description_display: If MySQL innodb log writes stalling.
 
     - alert: MysqlRestarted
       expr: 'mysql_global_status_uptime{namespace="NAMESPACE"} < 60'
@@ -84,3 +92,4 @@ groups:
       annotations:
         summary: MySQL restarted (instance {{ $labels.instance }})
         description: "MySQL has just been restarted, less than one minute ago on {{ $labels.instance }}.\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+        description_display: MySQL has just been restarted, less than one minute ago
