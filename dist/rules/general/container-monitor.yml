@@ -13,14 +13,14 @@ groups:
         summary: Container killed (instance {{ $labels.instance }})
         description: "A container has disappeared\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
 
-    - alert: ContainerAbsent
-      expr: 'absent(container_last_seen{namespace="NAMESPACE"})'
-      for: 5m
-      labels:
-        severity: warning
-      annotations:
-        summary: Container absent (instance {{ $labels.instance }})
-        description: "A container is absent for 5 min\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+    # - alert: ContainerAbsent
+    #   expr: 'absent(container_last_seen{namespace="NAMESPACE"})'
+    #   for: 5m
+    #   labels:
+    #     severity: warning
+    #   annotations:
+    #     summary: Container absent (instance {{ $labels.instance }})
+    #     description: "A container is absent for 5 min\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
 
     - alert: ContainerHighCpuUtilization
       expr: '(sum(rate(container_cpu_usage_seconds_total{name!="",namespace="NAMESPACE"}[3m])) BY (instance, name) * 100) > 80'
