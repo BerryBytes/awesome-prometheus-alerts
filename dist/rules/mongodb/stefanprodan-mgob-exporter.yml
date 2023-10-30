@@ -12,3 +12,4 @@ groups:
       annotations:
         summary: Mgob backup failed (instance {{ $labels.instance }})
         description: "MongoDB backup has failed\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+        description_display: If MongoDB backup has failed.
