@@ -19,6 +19,7 @@
 			"GeneralRules"
 		],
 		"script": "",
+		"uninstall_script":"",
 		"values": [
 
 		]
@@ -32,6 +33,7 @@
 			"PerconaMongodbExporter"
 		],
 		"script": "",
+		"uninstall_script":"",
 		"values": [
 
 		]
@@ -40,9 +42,13 @@
 		"groups": [
 			"PostgresExporter"
 		],
-		"script": "",
+		"script": "helm install postgres-exporter --set-string service.annotations.\"prometheus.io/scrape\"=true --set-string service.annotations.\"prometheus.io/port\"=9187 --set config.datasource.host=$HOST --set config.datasource.password=$PASS --set config.datasource.user=$USER --devel prometheus-community/prometheus-postgres-exporter -n $NAMESPACE",
+		"uninstall_script": "helm uninstall postgres-exporter  -n $NAMESPACE",
 		"values": [
-
+			"NAMESPACE",
+			"USER",
+			"PASS",
+			"HOST"
 		]
 	}
 
