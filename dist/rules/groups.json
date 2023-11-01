@@ -32,13 +32,14 @@
 			"DcuMongodbExporter",
 			"PerconaMongodbExporter"
 		],
-		"script": "helm install mongodb-exporter prometheus-community/prometheus-mongodb-exporter --version 3.4.0 -n $NAMESPACE --set-string mongodb.uri=mongodb://$USER:$PASS@$HOST:27017 --set serviceMonitor.enabled=true --set serviceMonitor.additionalLabels.release=prometheus --set-string service.annotations.\"prometheus\\.io/scrape\"=true --set-string service.annotations.\"prometheus\\.io/port\"=\"metrics\"",
+		"script": "helm install mongodb-exporter prometheus-community/prometheus-mongodb-exporter --version 3.4.0 -n $NAMESPACE --set-string mongodb.uri=mongodb://$USER:$PASS@$HOST:$PORT --set serviceMonitor.enabled=true --set serviceMonitor.additionalLabels.release=prometheus --set-string service.annotations.\"prometheus\\.io/scrape\"=true --set-string service.annotations.\"prometheus\\.io/port\"=\"metrics\"",
 		"uninstall_script": "helm uninstall mongodb-exporter  -n $NAMESPACE",
 		"values": [
 			"NAMESPACE",
 			"USER",
 			"PASS",
-			"HOST"
+			"HOST",
+			"PORT"
 		]
 	},
 	"postgresql": {
